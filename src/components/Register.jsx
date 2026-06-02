@@ -3,7 +3,7 @@ import { useState } from "react";
 import Logo from "./Logo";
 import "./styles/Register.css";
 
-const Register = () => {
+const Register = ( { handleRegistration } ) => {
   const [data, setData] = useState({
     username: "",
     email: "",
@@ -17,6 +17,11 @@ const Register = () => {
       ...prevData,
       [name]: value,
     }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleRegistration(data);
   };
 
   return (

@@ -1,15 +1,35 @@
 import  { useState } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import Ducks from "./Ducks";
 import Login from "./Login";
 import MyProfile from "./MyProfile";
 import Register from "./Register";
 import ProtectedRoute from "./ProtectedRoute";
 import "./styles/App.css";
+import * as auth from "../utils/auth";
 
 function App() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const navigate = useNavigate();
+
+  const handleRegistration = ({
+    username,
+    email,
+    password,
+    confirmPassword,
+  }) => {
+    if (password === confirmPassword) {
+      auth
+      .register(username, password, email)
+      .then(() => {
+        // Leve o usuário para a página de login.
+          navigate("/login");
+      })
+      .catch(console.error);
+    }
+  };
 
   return (
     <Routes>
@@ -39,7 +59,7 @@ function App() {
         path="/register"
         element={
           <div className="registerContainer">
-            <Register />
+            <Register handleRegistration={handleRegistration}/>
           </div>
         }
       />
